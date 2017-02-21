@@ -6,10 +6,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -28,17 +25,19 @@ public class MainController {
 
         return "index";
     }
-
+    @ResponseBody
     @RequestMapping(value = "/admin/users", method = RequestMethod.GET)
-    public String getUsers(ModelMap modelMap) {
+    public User getUsers(ModelMap modelMap) {
         // 查询user表中所有记录
         //初始化容器
         List<User> UserList=UserDao.getAllUsers();
         // 将所有记录传递给要返回的jsp页面，放在userList当中
-        modelMap.addAttribute("userList", UserList);
+        //modelMap.addAttribute("userList", UserList);
 
         // 返回pages目录下的admin/users.jsp页面
-        return "admin/users";
+       // return "admin/users";
+        User user = UserDao.selectByPrimaryKey(1);
+        return  user;
     }
 
     // get请求，访问添加用户 页面

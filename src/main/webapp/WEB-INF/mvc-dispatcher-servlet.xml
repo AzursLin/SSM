@@ -36,21 +36,11 @@
     <bean class="org.springframework.web.servlet.view.BeanNameViewResolver"
           p:order="10" />
 
-    <!-- XMl及JSON视图解析器配置 -->
-    <!--全部转为json返回配置-->
-    <bean id="userListJson"
-        class="org.springframework.web.servlet.view.json.MappingJacksonJsonView"
-        p:renderedAttributes="userList" />
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter"/>
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
 
-    <!--指定json返回配置-->
-    <!-- <bean id="userListJson"
-          class="org.springframework.web.servlet.view.json.MappingJacksonJsonView">
-        <property name="renderedAttributes">
-            <set>
-                <value>userList</value>
-                <value>School</value>
-                <value>Work</value>
-            </set>
-        </property>
-    </bean>-->
 </beans>
