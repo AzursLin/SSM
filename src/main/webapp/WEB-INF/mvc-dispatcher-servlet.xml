@@ -3,11 +3,20 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:jpa="http://www.springframework.org/schema/data/jpa"
-       xmlns:tx="http://www.springframework.org/schema/tx"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd
+       ">
 
     <!--指明 controller 所在包，并扫描其中的注解-->
     <context:component-scan base-package="com.hctek.controller"/>
+
+    <!--开启mvc:annotation-driven-->
+    <mvc:annotation-driven />
 
     <!-- 静态资源(js、image等)的访问 -->
     <mvc:default-servlet-handler/>
@@ -23,5 +32,25 @@
         <property name="suffix" value=".jsp"/>
     </bean>
 
+    <!-- bean视图解析器 -->
+    <bean class="org.springframework.web.servlet.view.BeanNameViewResolver"
+          p:order="10" />
 
+    <!-- XMl及JSON视图解析器配置 -->
+    <!--全部转为json返回配置-->
+    <bean id="userListJson"
+        class="org.springframework.web.servlet.view.json.MappingJacksonJsonView"
+        p:renderedAttributes="userList" />
+
+    <!--指定json返回配置-->
+    <!-- <bean id="userListJson"
+          class="org.springframework.web.servlet.view.json.MappingJacksonJsonView">
+        <property name="renderedAttributes">
+            <set>
+                <value>userList</value>
+                <value>School</value>
+                <value>Work</value>
+            </set>
+        </property>
+    </bean>-->
 </beans>
