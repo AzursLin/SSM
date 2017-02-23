@@ -36,6 +36,7 @@
     <bean class="org.springframework.web.servlet.view.BeanNameViewResolver"
           p:order="10" />
 
+    <!-- json -->
     <mvc:annotation-driven>
         <mvc:message-converters>
             <bean class="org.springframework.http.converter.StringHttpMessageConverter"/>
@@ -43,4 +44,7 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
 
-</beans>
+
+
+
+    </beans>

@@ -7,9 +7,11 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -21,23 +23,31 @@ public class MainController {
     //获得一个BEAN USER表操作对象
     UserMapper UserDao=ctx.getBean(UserMapper.class);
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index() {
-
+    public String index(HttpServletRequest request,HttpServletResponse response) {
+        //使用request对象的getSession()获取session，如果session不存在则创建一个
+        HttpSession session = request.getSession();
+        //将数据存储到session中
+        session.setAttribute("data", "孤傲苍狼");
+        //获取session的Id
+        String sessionId = session.getId();
+        if (session.isNew()) {
+            System.out.print("session创建成功，session的id是："+sessionId);
+                }else {
+            System.out.print("服务器已经存在该session了，session的id是："+sessionId);
+                  }
         return "index";
     }
-    @RequestMapping(value = "/admin/users", method = RequestMethod.GET)
-    public String getUsers(ModelMap modelMap) {
-        // 查询user表中所有记录
-        //初始化容器
-        List<User> UserList=UserDao.getAllUsers();
-        // 将所有记录传递给要返回的jsp页面，放在userList当中
-        modelMap.addAttribute("userList", UserList);
 
-        // 返回pages目录下的admin/users.jsp页面
-        return "admin/users";
-    }
+/*  @ResponseBody
+    @RequestMapping(value="loginAction.do", method=RequestMethod.POST)
+    public ModelAndView loginAction(@RequestParam(value="username") String username, @RequestParam(value="password") String password,
+                                    HttpServletRequest session, HttpServletResponse resp) {
 
-    @ResponseBody
+
+        return view;
+    }*/
+
+@ResponseBody
     @RequestMapping("/admin/usersjs")
     public List<User> getUsersjs(@RequestBody ModelMap modelMap) {
         // 查询user表中所有记录
@@ -50,6 +60,18 @@ public class MainController {
         // return "admin/users";
         User user = UserDao.selectByPrimaryKey(1);
         return  UserList;
+    }
+
+    @RequestMapping(value = "/admin/users", method = RequestMethod.GET)
+    public String getUsers(ModelMap modelMap) {
+        // 查询user表中所有记录
+        //初始化容器
+        List<User> UserList=UserDao.getAllUsers();
+        // 将所有记录传递给要返回的jsp页面，放在userList当中
+        modelMap.addAttribute("userList", UserList);
+
+        // 返回pages目录下的admin/users.jsp页面
+        return "admin/users";
     }
 
     // get请求，访问添加用户 页面
