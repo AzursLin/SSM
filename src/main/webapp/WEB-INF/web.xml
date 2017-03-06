@@ -17,7 +17,7 @@
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
 
-  <!-- session拦截器 -->
+  <!-- session拦截器
   <filter>
     <filter-name>springSessionRepositoryFilter</filter-name>
     <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
@@ -25,12 +25,12 @@
   <filter-mapping>
     <filter-name>springSessionRepositoryFilter</filter-name>
     <url-pattern>/*</url-pattern>
-  </filter-mapping>
+  </filter-mapping>-->
 
-  <!-- session超时 -->
+  <!-- session超时
   <session-config>
     <session-timeout>10</session-timeout>
-  </session-config>
+  </session-config> -->
 
   <servlet>
     <servlet-name>mvc-dispatcher</servlet-name>
@@ -38,11 +38,12 @@
     <load-on-startup>1</load-on-startup>
   </servlet>
 
+
+
   <servlet-mapping>
     <servlet-name>mvc-dispatcher</servlet-name>
     <url-pattern>/</url-pattern>
   </servlet-mapping>
-
 
   <filter>
     <filter-name>encodingFilter</filter-name>

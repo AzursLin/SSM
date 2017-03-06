@@ -5,13 +5,15 @@ import com.hctek.model.User;
 import java.util.List;
 
 public interface UserMapper {
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(Integer userId);
 
     int insert(User record);
 
     int insertSelective(User record);
 
-    User selectByPrimaryKey(Integer id);
+    User selectByPrimaryKey(Integer userId);
+
+    User selectByName(String userName);
 
     int updateByPrimaryKeySelective(User record);
 

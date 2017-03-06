@@ -2,95 +2,81 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.hctek.dao.UserMapper" >
   <resultMap id="BaseResultMap" type="com.hctek.model.User" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
-    <result column="password" property="password" jdbcType="INTEGER" />
-    <result column="firstname" property="firstname" jdbcType="VARCHAR" />
-    <result column="lastname" property="lastname" jdbcType="VARCHAR" />
+    <id column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="user_password" property="userPassword" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, nickname, password, firstname, lastname
+    user_id, user_name, user_password
   </sql>
-  <select id="getAllUsers" resultMap="BaseResultMap">
-    select * from user
+  <select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from users
+    where user_name = #{userName,jdbcType=VARCHAR}
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
+    select
     <include refid="Base_Column_List" />
-    from user
-    where id = #{id,jdbcType=INTEGER}
+    from users
+    where user_name = #{userId,jdbcType=INTEGER}
+  </select>
+  <select id="getAllUsers" parameterType="java.lang.Integer" resultMap="BaseResultMap" >
+    select
+    *
+    from users
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from user
-    where id = #{id,jdbcType=INTEGER}
+    delete from users
+    where user_id = #{userId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.hctek.model.User" >
-    insert into user (id, nickname, password, 
-      firstname, lastname)
-    values (#{id,jdbcType=INTEGER}, #{nickname,jdbcType=VARCHAR}, #{password,jdbcType=INTEGER}, 
-      #{firstname,jdbcType=VARCHAR}, #{lastname,jdbcType=VARCHAR})
+    insert into users (user_id, user_name, user_password
+      )
+    values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userPassword,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.hctek.model.User" >
-    insert into user
+    insert into users
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
+      <if test="userId != null" >
+        user_id,
       </if>
-      <if test="nickname != null" >
-        nickname,
+      <if test="userName != null" >
+        user_name,
       </if>
-      <if test="password != null" >
-        password,
-      </if>
-      <if test="firstname != null" >
-        firstname,
-      </if>
-      <if test="lastname != null" >
-        lastname,
+      <if test="userPassword != null" >
+        user_password,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
       </if>
-      <if test="nickname != null" >
-        #{nickname,jdbcType=VARCHAR},
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
       </if>
-      <if test="password != null" >
-        #{password,jdbcType=INTEGER},
-      </if>
-      <if test="firstname != null" >
-        #{firstname,jdbcType=VARCHAR},
-      </if>
-      <if test="lastname != null" >
-        #{lastname,jdbcType=VARCHAR},
+      <if test="userPassword != null" >
+        #{userPassword,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.hctek.model.User" >
-    update user
+    update users
     <set >
-      <if test="nickname != null" >
-        nickname = #{nickname,jdbcType=VARCHAR},
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
       </if>
-      <if test="password != null" >
-        password = #{password,jdbcType=INTEGER},
-      </if>
-      <if test="firstname != null" >
-        firstname = #{firstname,jdbcType=VARCHAR},
-      </if>
-      <if test="lastname != null" >
-        lastname = #{lastname,jdbcType=VARCHAR},
+      <if test="userPassword != null" >
+        user_password = #{userPassword,jdbcType=VARCHAR},
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where user_id = #{userId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.hctek.model.User" >
-    update user
-    set nickname = #{nickname,jdbcType=VARCHAR},
-      password = #{password,jdbcType=INTEGER},
-      firstname = #{firstname,jdbcType=VARCHAR},
-      lastname = #{lastname,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
+    update users
+    set user_name = #{userName,jdbcType=VARCHAR},
+      user_password = #{userPassword,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=INTEGER}
   </update>
 </mapper>

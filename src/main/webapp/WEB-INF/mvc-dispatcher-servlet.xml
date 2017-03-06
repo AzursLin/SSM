@@ -13,7 +13,7 @@
        ">
 
     <!--指明 controller 所在包，并扫描其中的注解-->
-    <context:component-scan base-package="com.hctek.controller"/>
+    <context:component-scan base-package="com.hctek"/>
 
     <!--开启mvc:annotation-driven-->
     <mvc:annotation-driven />
@@ -21,10 +21,9 @@
     <!-- 静态资源(js、image等)的访问 -->
     <mvc:default-servlet-handler/>
 
-    <!-- 开启注解 -->
-    <mvc:annotation-driven/>
 
     <!--ViewResolver 视图解析器-->
+    <!--也是controller视图路径-->
     <!--用于支持Servlet、JSP视图解析-->
     <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
@@ -32,17 +31,17 @@
         <property name="suffix" value=".jsp"/>
     </bean>
 
-    <!-- bean视图解析器 -->
+    <!-- bean视图解析器
     <bean class="org.springframework.web.servlet.view.BeanNameViewResolver"
-          p:order="10" />
+          p:order="10" />-->
 
-    <!-- json -->
+    <!-- json
     <mvc:annotation-driven>
         <mvc:message-converters>
             <bean class="org.springframework.http.converter.StringHttpMessageConverter"/>
             <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
         </mvc:message-converters>
-    </mvc:annotation-driven>
+    </mvc:annotation-driven>-->
 
 
 
