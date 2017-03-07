@@ -1,30 +1,19 @@
 package com.hctek.controller;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
-
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
 
 import com.hctek.dao.UserMapper;
 import com.hctek.model.User;
 import com.hctek.myImpl.CommonResult;
-import com.hctek.myImpl.TestSmsQueryVO;
-import com.hctek.myImpl.TestSmsVO;
 //import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.alibaba.fastjson.JSONObject;
+import static com.google.common.base.Preconditions.checkNotNull;
 //import com.google.common.collect.Lists;
 
 //import static com.google.common.base.Preconditions.*;
@@ -44,16 +33,6 @@ public class TestSmsController {
     //获得一个BEAN USER表操作对象
     UserMapper UserDao=ctx.getBean(UserMapper.class);
     private final static Logger logger = LoggerFactory.getLogger(TestSmsController.class);
-
-    /*
-     * 如果要提供跨域的接口，需要支持CORS
-     * 
-     * spring 4.2+开始支持CORS，有两种方式：
-     * 1. 在controller类或方法上使用CrossOrigin注解
-     * 2. 在spring配置文件中配置特定路径支持CORS
-     * 
-     * 注解的方式更方便，但在jdk7下有bug，必须升级到jdk7_80或jdk8才可以
-     */
 
     /**
      * 查询/select
@@ -83,21 +62,24 @@ public class TestSmsController {
     /**
      * 新增一条数据/insert <br/>
      *
-     * @param vo 要插入的数据
+     * @param user 要插入的数据
      * @return 完整的数据记录，补充了主键的(如果有主键的话)
      */
-    @RequestMapping("insert")
+    @RequestMapping(value = "insert", method = RequestMethod.POST)
     @ResponseBody
-    public CommonResult<TestSmsVO> insert(@RequestBody TestSmsVO vo) {
+    public CommonResult<User> insert(@RequestBody User user) {
         try {
-//            checkNotNull(vo);
+            checkNotNull(user);
 
-            // TODO: 填写自己的逻辑
 
-            return CommonResult.successReturn(vo);
+            if(UserDao.insert(user) == 1) {
+                return CommonResult.successReturn(user, null, "新增用户成功,用户名" + user.getUserName());
+            }else{
+                throw new Exception();
+            }
         } catch (Exception e) {
             logger.error("insert error", e);
-            return CommonResult.errorReturn(200, "insert error");
+            return CommonResult.errorReturn(200, "新增失败");
         }
     }
 
@@ -106,23 +88,28 @@ public class TestSmsController {
      * 可以单条更新，也可以批量更新
      *
      * @param keys 要更新的记录，逗号分隔的主键
-     * @param vo 要更新哪些字段
+     * @param user 要更新哪些字段
      * @return 更新了几条记录
      */
-    @RequestMapping("update")
+    @RequestMapping(value = "update", method = RequestMethod.POST)
+    @CrossOrigin
     @ResponseBody
-    public CommonResult<Integer> update(@RequestParam("keys") String keys, @RequestBody TestSmsVO vo) {
+    public CommonResult<Integer> update(@RequestParam("keys") Integer keys, @RequestBody User user) {
         try {
-//            checkNotNull(keys);
+            checkNotNull(keys);
 //            checkNotNull(vo);
 
             // 注意：主键可能是数字，也可能是字符串，要自己处理
-            // TODO: 填写自己的逻辑
 
-            return CommonResult.successReturn(100);
+            if(UserDao.updateByPrimaryKeySelective(user) == 1) {
+                return CommonResult.successReturn(100);
+            }
+            else{
+                throw new Exception();
+            }
         } catch (Exception e) {
             logger.error("update error", e);
-            return CommonResult.errorReturn(300, "update error");
+            return CommonResult.errorReturn(300, "修改失败");
         }
     }
 
@@ -133,19 +120,25 @@ public class TestSmsController {
      * @param keys 要删除的记录，逗号分隔的主键
      * @return 删除了几条记录
      */
-    @RequestMapping("delete")
+    @RequestMapping(value = "delete", method = RequestMethod.GET)
+    @CrossOrigin
     @ResponseBody
     public CommonResult<Integer> delete(@RequestParam("keys") String keys) {
         try {
-//            checkNotNull(keys);
+             checkNotNull(keys);
 
-            // TODO: 填写自己的逻辑
 
-            return CommonResult.successReturn(99);
+            if(UserDao.deleteByPrimaryKey(Integer.valueOf(keys)) == 1) {
+                return CommonResult.successReturn(99);
+            }
+            else{
+                throw new Exception();
+            }
         } catch (Exception e) {
             logger.error("delete error", e);
-            return CommonResult.errorReturn(400, "delete error");
+            return CommonResult.errorReturn(400, "删除失败");
         }
+
     }
 
     /**

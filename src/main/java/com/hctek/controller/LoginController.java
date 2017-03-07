@@ -35,11 +35,13 @@ public class LoginController {
      *
      * @return
      */
-    @RequestMapping("getCurrentUser")
+    @CrossOrigin
+    @RequestMapping(value = "getCurrentUser", method = RequestMethod.GET)
     @ResponseBody
     public CommonResult<String> getCurrentUser() {
         // TODO: 填写自己的逻辑
-        return CommonResult.errorReturn(10,"Not Login Yet");
+       // return CommonResult.errorReturn(10,"Not Login Yet");
+        return CommonResult.successReturn("guest");
     }
 
     /**
@@ -47,6 +49,7 @@ public class LoginController {
      *
      * @return
      */
+    @CrossOrigin
     @RequestMapping(value = "login", method = RequestMethod.POST)
     @ResponseBody
     public CommonResult<String> login(String username, String password) {

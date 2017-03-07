@@ -28,6 +28,11 @@ const sidebarMenu = [
         icon: 'android',
       },
       {
+        key: 'option4',
+        name: '短信表管理2',
+        icon: 'android',
+      },
+      {
         key: 'option3',
         name: '选项3',
       },

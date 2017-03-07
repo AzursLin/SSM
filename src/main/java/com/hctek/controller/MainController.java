@@ -1,6 +1,7 @@
 package com.hctek.controller;
 
 import com.hctek.dao.UserMapper;
+import com.hctek.dao.UserMapper;
 import com.hctek.model.User;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -14,7 +15,6 @@ import java.util.List;
  * Created by Azurs on 2017-01-25.
  */
 @Controller
-@CrossOrigin
 public class MainController {
     ApplicationContext ctx=new ClassPathXmlApplicationContext("ApplicationContext.xml");
     //获得一个BEAN USER表操作对象
@@ -32,7 +32,7 @@ public class MainController {
                 }else {
             System.out.print("服务器已经存在该session了，session的id是："+sessionId);
                   }*/
-        return "admin/users";
+        return "index";
     }
 
 /*  @ResponseBody

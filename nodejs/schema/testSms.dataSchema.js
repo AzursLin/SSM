@@ -21,6 +21,6 @@ module.exports = [
     key: 'userAdministrative',
     title: '管理权限',
     dataType: 'int',
-    validator: [{type: 'int', required: true, message: '格式有误'}],
+    defaultValue: 1,
   },
 ];
