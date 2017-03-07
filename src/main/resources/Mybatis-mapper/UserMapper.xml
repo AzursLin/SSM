@@ -5,10 +5,27 @@
     <id column="user_id" property="userId" jdbcType="INTEGER" />
     <result column="user_name" property="userName" jdbcType="VARCHAR" />
     <result column="user_password" property="userPassword" jdbcType="VARCHAR" />
+    <result column="user_administrative" property="userAdministrative" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
     user_id, user_name, user_password
   </sql>
+  <select id="getPartInfoByUsers" parameterType="com.hctek.model.User" resultMap="BaseResultMap">
+    SELECT * FROM users
+    WHERE 1=1
+    <if test="userId != null" >
+    AND user_id = #{userId,jdbcType=INTEGER}
+    </if>
+    <if test="userName != null" >
+    AND user_name = #{userName,jdbcType=VARCHAR}
+    </if>
+    <if test="userPassword != null" >
+    AND user_password = #{userPassword,jdbcType=VARCHAR}
+    </if>
+    <if test="userAdministrative != null" >
+    AND user_administrative = #{userAdministrative,jdbcType=INTEGER}
+    </if>
+  </select>
   <select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select
     <include refid="Base_Column_List" />

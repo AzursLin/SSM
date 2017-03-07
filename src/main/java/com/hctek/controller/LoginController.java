@@ -2,11 +2,17 @@ package com.hctek.controller;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.hctek.dao.UserMapper;
+import com.hctek.model.User;
 import com.hctek.myImpl.CommonResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -16,9 +22,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author foolbeargm@gmail.com
  */
 @Controller
+@CrossOrigin
 @RequestMapping("/api")
 public class LoginController {
-
+    ApplicationContext ctx=new ClassPathXmlApplicationContext("ApplicationContext.xml");
+    //获得一个BEAN USER表操作对象
+    UserMapper UserDao=ctx.getBean(UserMapper.class);
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
     /**
@@ -30,7 +39,7 @@ public class LoginController {
     @ResponseBody
     public CommonResult<String> getCurrentUser() {
         // TODO: 填写自己的逻辑
-        return CommonResult.successReturn("guest");
+        return CommonResult.errorReturn(10,"Not Login Yet");
     }
 
     /**
@@ -38,12 +47,25 @@ public class LoginController {
      *
      * @return
      */
-    @RequestMapping("login")
+    @RequestMapping(value = "login", method = RequestMethod.POST)
     @ResponseBody
     public CommonResult<String> login(String username, String password) {
         // TODO: 填写自己的逻辑
         logger.info("username = {}", username);
-        return CommonResult.successReturn("guest");
+        CommonResult<String> resultList;
+        User dbUser = UserDao.selectByName(username);
+        if(dbUser != null){
+            if(username.equals(dbUser.getUserName())&&password.equals(dbUser.getUserPassword())){
+                resultList = CommonResult.successReturn(username);
+            }else {
+                resultList = CommonResult.errorReturn(11,"账号或密码不正确");
+            }
+        }else {
+            resultList = CommonResult.errorReturn(12,"用户不存在");
+        }
+
+
+        return resultList;
     }
 
     /**
