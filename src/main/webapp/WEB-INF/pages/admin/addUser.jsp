@@ -28,6 +28,11 @@
 </head>
 <body>
 <div class="container">
+    <div class="row clearfix">
+        <div class="col-md-4 column">
+
+        </div>
+        <div class="col-md-8 column">
     <h1>SpringMVC 添加用户</h1>
     <hr/>
     <form:form action="/admin/users/addP" method="post" commandName="user" role="form">
@@ -51,6 +56,7 @@
             <button type="submit" class="btn btn-sm btn-success">提交</button>
         </div>
     </form:form>
+        </div>
 </div>
 
 <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->

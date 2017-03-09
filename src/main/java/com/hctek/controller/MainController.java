@@ -32,7 +32,7 @@ public class MainController {
                 }else {
             System.out.print("服务器已经存在该session了，session的id是："+sessionId);
                   }*/
-        return "index";
+        return "admin/users";
     }
 
 /*  @ResponseBody
