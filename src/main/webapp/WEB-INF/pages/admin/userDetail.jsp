@@ -26,7 +26,9 @@
     <![endif]-->
 </head>
 <body>
-<div class="container">
+<div id="wrapper">
+
+    <div id="page-wrapper">
     <h1>SpringMVC 用户详情</h1>
     <hr/>
 
@@ -36,22 +38,19 @@
             <td>${user.id}</td>
         </tr>
         <tr>
-            <th>Nickname</th>
-            <td>${user.nickname}</td>
+            <th>用户名</th>
+            <td>${user.name}</td>
         </tr>
         <tr>
-            <th>First Name</th>
-            <td>${user.firstname}</td>
-        </tr>
-        <tr>
-            <th>Last Name</th>
-            <td>${user.lastname}</td>
-        </tr>
-        <tr>
-            <th>Password</th>
+            <th>密码</th>
             <td>${user.password}</td>
         </tr>
+        <tr>
+            <th>管理权限</th>
+            <td>${user.administrative}</td>
+        </tr>
     </table>
+    </div>
 </div>
 
 <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->

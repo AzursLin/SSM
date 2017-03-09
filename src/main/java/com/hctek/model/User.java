@@ -1,45 +1,43 @@
 package com.hctek.model;
 
 public class User {
-    private Integer Id;
+    private Integer id;
 
-    private String Name;
+    private String name;
 
-    private String Password;
+    private String password;
 
-    private Integer Administrative;
+    private Integer administrative;
 
     public Integer getId() {
-        return Id;
+        return id;
     }
 
-    public void setId(Integer userId) {
-        this.Id = userId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
-    public void setName(String userName) {
-        this.Name = userName == null ? null : userName.trim();
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
     }
 
     public String getPassword() {
-        return Password;
-    }
-
-
-
-    public Integer getAdministrative() {
-        return Administrative;
-    }
-
-    public void setAdministrative(Integer Administrative) {
-        this.Administrative = Administrative;
+        return password;
     }
 
     public void setPassword(String password) {
-        Password = password;
+        this.password = password == null ? null : password.trim();
+    }
+
+    public Integer getAdministrative() {
+        return administrative;
+    }
+
+    public void setAdministrative(Integer administrative) {
+        this.administrative = administrative;
     }
 }

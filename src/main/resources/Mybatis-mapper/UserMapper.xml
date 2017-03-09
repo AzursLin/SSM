@@ -3,8 +3,8 @@
 <mapper namespace="com.hctek.dao.UserMapper" >
   <resultMap id="BaseResultMap" type="com.hctek.model.User" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <id column="name" property="name" jdbcType="VARCHAR" />
-    <id column="password" property="password" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
     <result column="administrative" property="administrative" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
@@ -15,41 +15,15 @@
     *
     from users
   </select>
-  <select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select
-    <include refid="Base_Column_List" />
-    from users
-    where name = #{Name,jdbcType=VARCHAR}
-  </select>
-  <select id="getPartInfoByUsers" parameterType="com.hctek.model.User" resultMap="BaseResultMap">
-    SELECT * FROM users
-    WHERE 1=1
-    <if test="Id != null" >
-      AND id = #{Id,jdbcType=INTEGER}
-    </if>
-    <if test="Name != null" >
-      AND name = #{Name,jdbcType=VARCHAR}
-    </if>
-    <if test="Password != null" >
-      AND password = #{Password,jdbcType=VARCHAR}
-    </if>
-    <if test="userAdministrative != null" >
-      AND administrative = #{Administrative,jdbcType=INTEGER}
-    </if>
-  </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.hctek.model.User" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from users
     where id = #{id,jdbcType=INTEGER}
-      and name = #{name,jdbcType=VARCHAR}
-      and password = #{password,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="com.hctek.model.User" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from users
     where id = #{id,jdbcType=INTEGER}
-      and name = #{name,jdbcType=VARCHAR}
-      and password = #{password,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.hctek.model.User" >
     insert into users (id, name, password, 
@@ -91,19 +65,23 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.hctek.model.User" >
     update users
     <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
       <if test="administrative != null" >
         administrative = #{administrative,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
-      and name = #{name,jdbcType=VARCHAR}
-      and password = #{password,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.hctek.model.User" >
     update users
-    set administrative = #{administrative,jdbcType=INTEGER}
+    set name = #{name,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      administrative = #{administrative,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
-      and name = #{name,jdbcType=VARCHAR}
-      and password = #{password,jdbcType=VARCHAR}
   </update>
 </mapper>

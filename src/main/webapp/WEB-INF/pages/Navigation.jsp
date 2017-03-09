@@ -261,7 +261,7 @@
                     <!-- /.nav-second-level -->
                 </li>
                 <li>
-                    <a href="tables.html"><i class="fa fa-table fa-fw"></i> 用户管理表</a>
+                    <a href="javascript:void(0)"  onclick="click" id="userTable"><i class="fa fa-table fa-fw"></i> 用户管理表</a>
                 </li>
                 <li>
                     <a href="forms.html"><i class="fa fa-edit fa-fw"></i> Forms</a>
@@ -338,5 +338,13 @@
     </div>
     <!-- /.navbar-static-side -->
 </nav>
+
+<script type="text/javascript">
+    $(function(){
+        $("#userTable").click(function(){
+            $("#wrapper").load("users.jsp");
+        });
+    });
+</script>
 </body>
 </html>

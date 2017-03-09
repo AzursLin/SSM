@@ -52,7 +52,7 @@
 <div id="wrapper">
 
 
-    <jsp:include page="../Navigation.jsp" flush="true"/><!--动态包含-->
+
 
     <div id="page-wrapper">
         <div class="row">
