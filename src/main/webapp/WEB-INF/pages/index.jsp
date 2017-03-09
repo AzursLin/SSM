@@ -44,7 +44,12 @@
 <!-- /#wrapper -->
 <div id="wrapper">
     <div id="page-wrapper">
-
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">91你好棒棒哦</h1>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
     </div>
 </div>
 
@@ -66,6 +71,12 @@
 <script src="../../../dist/js/sb-admin-2.js"></script>
 
 <!-- Page-Level Demo Scripts - Tables - Use for reference -->
-
+<script type="text/javascript">
+    $(function(){
+        $("#userTable").click(function(){
+            $("#wrapper").load("/admin/users");
+        });
+    });
+</script>
 </body>
 </html>
