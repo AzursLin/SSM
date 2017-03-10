@@ -9,7 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Azurs on 2017-01-25.
@@ -81,8 +83,9 @@ public class MainController {
     }
 
     // post请求，处理添加用户请求，并重定向到用户管理页面
+    @ResponseBody
     @RequestMapping(value = "/admin/users/addP", method = RequestMethod.POST)
-    public String addUserPost(@ModelAttribute("user") User userEntity) {
+    public Map<String,String>  addUserPost(@ModelAttribute("user") User userEntity) {
         // 注意此处，post请求传递过来的是一个UserEntity对象，里面包含了该用户的信息
         // 通过@ModelAttribute()注解可以获取传递过来的'user'，并创建这个对象
         //@ModelAttribute注解：收集post过来的数据（在此，相当于post过来了一整个userEntity，不用一个一个地取）
@@ -90,11 +93,11 @@ public class MainController {
         // 数据库中添加一个用户，该步暂时不会刷新缓存
         UserDao.insert(userEntity);
 
-        // 数据库中添加一个用户，并立即刷新缓存
- //       userRepository.saveAndFlush(userEntity);
+        Map<String,String> result = new HashMap<String,String>();
+        result.put("flag", "true");
 
         // 重定向到用户管理页面，方法为 redirect:url
-        return "redirect:/admin/users";
+        return result;
     }
 
     // 查看用户详情

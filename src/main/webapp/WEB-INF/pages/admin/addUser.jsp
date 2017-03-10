@@ -14,48 +14,36 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <title>SpringMVC 添加用户</title>
-
-    <!-- 新 Bootstrap 核心 CSS 文件 -->
-    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
 </head>
 <body>
-<div class="container">
-    <div class="row clearfix">
-        <div class="col-md-4 column">
-
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">添加用户</h1>
         </div>
-        <div class="col-md-8 column">
-    <h1>SpringMVC 添加用户</h1>
-    <hr/>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
     <form:form action="/admin/users/addP" method="post" commandName="user" role="form">
         <div class="form-group">
-            <label for="nickname">Nickname:</label>
-            <input type="text" class="form-control" id="nickname" name="nickname" placeholder="Enter Nickname:"/>
+            <label for="name">用户名:</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="输入用户名:"/>
         </div>
         <div class="form-group">
-            <label for="firstname">First Name:</label>
-            <input type="text" class="form-control" id="firstname" name="firstname" placeholder="Enter FirstName:"/>
+            <label for="password">密码:</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="输入密码:"/>
         </div>
         <div class="form-group">
-            <label for="lastname">Last Name:</label>
-            <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Enter LastName:"/>
+            <label for="administrative">管理权限:</label>
+            <input type="text" class="form-control" id="administrative" name="administrative" placeholder="权限:"/>
         </div>
         <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="text" class="form-control" id="password" name="password" placeholder="Enter Password:"/>
-        </div>
-        <div class="form-group">
-            <button type="submit" class="btn btn-sm btn-success">提交</button>
+            <a onclick="postAddUser()" type="button" class="btn btn-sm btn-success">提交</a>
         </div>
     </form:form>
+    </div>
         </div>
 </div>
 
@@ -64,5 +52,29 @@
 
 <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
 <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script>
+    function postAddUser(){
+        $.ajax({
+            type:"POST",
+            url:"/admin/users/addP",
+            dataType: "json",
+            data:{ name:encodeURI($("#name").val()),
+                    password:encodeURI($("#password").val()),
+                    administrative:encodeURI($("#administrative").val())},
+            success: function (data ,textStatus, jqXHR)
+            {
+                if("true"==data.flag){
+                    $("#wrapper").load("/admin/users");
+                    return true;
+                }else{
+                    alert("不合法！错误信息如下："+data.errorMsg);
+                    return false;
+                }
+            },
+            error:function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("请求失败！");
+            }
+    })};
+</script>
 </body>
 </html>
