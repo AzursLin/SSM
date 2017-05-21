@@ -58,6 +58,7 @@
             {
                 if( true ==data.success){
                     alert(data.message);
+                    window.location.href='/admin/myCMS';
                     return true;
                 }else{
                     alert(data.message);

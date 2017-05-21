@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -169,9 +170,12 @@ public class MainController {
         String userName = request.getParameter("userName");
         String passWord = request.getParameter("passWord");
         User user = UserDao.userLogin(userName,passWord);
+        HttpSession session = request.getSession();
 
         Gson gson = new Gson();
         if ( user != null ) {
+            //将数据存储到session中
+            session.setAttribute("myflag", "sucess");
             return gson.toJson(CommonResult.successReturn(null, 0, "登录成功"));
         } else {
             return gson.toJson(CommonResult.successReturn(null, 1, "登录失败"));

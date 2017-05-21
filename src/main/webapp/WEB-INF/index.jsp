@@ -125,14 +125,14 @@
                     </c:if>
                 </div>
                 <div class="button-side-bar index-transparent">
-                    <p class="content-title pull-left">校庆动态:</p>
-                    <c:if test="${!empty AnniversaryDynamicList}">
+                    <p class="content-title pull-left">校友寄语:</p>
+                    <c:if test="${!empty AlumniMessageList}">
                         <a href="" class="index-more pull-right">+more</a>
                         <div class="specific-content">
                             <ul>
-                                <c:forEach items="${AnniversaryDynamicList}" var="AnniversaryDynamic">
-                                    <a href="anniversary-dynamic?id=${AnniversaryDynamic.id}&code=${AnniversaryDynamic.creatTime}">
-                                        <li class="specific-content-list"> ${AnniversaryDynamic.title}</li>
+                                <c:forEach items="${AlumniMessageList}" var="AlumniMessage">
+                                    <a href="alumni-message?id=${AlumniMessage.id}&code=${AlumniMessage.creatTime}">
+                                        <li class="specific-content-list"> ${AlumniMessage.title}</li>
                                     </a>
                                 </c:forEach>
                             </ul>
@@ -141,19 +141,20 @@
                 </div>
             </div>
             <div class="right-content index-transparent">
-                <p class="content-title pull-left">校友寄语:</p>
-                <c:if test="${!empty AlumniMessageList}">
+                <p class="content-title pull-left">校庆动态:</p>
+                <c:if test="${!empty AnniversaryDynamicList}">
                     <a href="" class="index-more pull-right">+more</a>
                     <div class="specific-content">
                         <ul>
-                            <c:forEach items="${AlumniMessageList}" var="AlumniMessage">
-                                <a href="alumni-message?id=${AlumniMessage.id}&code=${AlumniMessage.creatTime}">
-                                    <li class="specific-content-list"> ${AlumniMessage.title}</li>
+                            <c:forEach items="${AnniversaryDynamicList}" var="AnniversaryDynamic">
+                                <a href="anniversary-dynamic?id=${AnniversaryDynamic.id}&code=${AnniversaryDynamic.creatTime}">
+                                    <li class="specific-content-list"> ${AnniversaryDynamic.title}</li>
                                 </a>
                             </c:forEach>
                         </ul>
                     </div>
                 </c:if>
+
             </div>
         </div>
     </div>

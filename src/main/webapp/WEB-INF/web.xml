@@ -62,5 +62,17 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 
+  <!-- 配置登陆过滤器 -->
+     <filter>
+         <filter-name>login</filter-name>
+         <filter-class>com.hctek.filter.LoginFilter</filter-class>
+     </filter>
+
+     <filter-mapping>
+         <filter-name>login</filter-name>
+         <url-pattern>/admin/*</url-pattern>
+         <url-pattern>/article/*</url-pattern>
+     </filter-mapping>
+
 
 </web-app>
