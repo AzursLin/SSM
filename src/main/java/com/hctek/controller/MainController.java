@@ -1,14 +1,29 @@
 package com.hctek.controller;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.google.gson.Gson;
+import com.hctek.dao.AlumniMessageMapper;
+import com.hctek.dao.AnniversaryAnnouncementMapper;
+import com.hctek.dao.AnniversaryDynamicMapper;
 import com.hctek.dao.UserMapper;
-import com.hctek.dao.UserMapper;
+import com.hctek.model.AlumniMessage;
+import com.hctek.model.AnniversaryAnnouncement;
+import com.hctek.model.AnniversaryDynamic;
 import com.hctek.model.User;
+import com.hctek.myImpl.CommonResult;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,33 +36,154 @@ public class MainController {
     ApplicationContext ctx=new ClassPathXmlApplicationContext("ApplicationContext.xml");
     //获得一个BEAN USER表操作对象
     UserMapper UserDao=ctx.getBean(UserMapper.class);
+
+
+    /*
+    主页数据装载
+    全加载未优化
+     */
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index() { //HttpServletRequest request,HttpServletResponse response
-        //使用request对象的getSession()获取session，如果session不存在则创建一个
-     /*   HttpSession session = request.getSession();
-        //将数据存储到session中
-        session.setAttribute("data", "孤傲苍狼");
-        //获取session的Id
-        String sessionId = session.getId();
-        if (session.isNew()) {
-            System.out.print("session创建成功，session的id是："+sessionId);
-                }else {
-            System.out.print("服务器已经存在该session了，session的id是："+sessionId);
-                  }*/
+    public String index(ModelMap modelMap) {
+        AlumniMessageMapper AlumniMessageDao=ctx.getBean(AlumniMessageMapper.class);
+        List<AlumniMessage> AlumniMessageList=AlumniMessageDao.getAllAlumniMessage();
+        modelMap.addAttribute("AlumniMessageList", AlumniMessageList);
+
+        AnniversaryAnnouncementMapper AnniversaryAnnouncementDao=ctx.getBean(AnniversaryAnnouncementMapper.class);
+        List<AnniversaryAnnouncement> AnniversaryAnnouncementList=AnniversaryAnnouncementDao.getAllAnniversaryAnnouncement();
+        modelMap.addAttribute("AnniversaryAnnouncementList", AnniversaryAnnouncementList);
+
+        AnniversaryDynamicMapper AnniversaryDynamicDao=ctx.getBean(AnniversaryDynamicMapper.class);
+        List<AnniversaryDynamic> AnniversaryDynamicList=AnniversaryDynamicDao.getAllAnniversaryDynamic();
+        modelMap.addAttribute("AnniversaryDynamicList", AnniversaryDynamicList);
+
+
         return "index";
     }
 
-/*  @ResponseBody
-    @RequestMapping(value="loginAction.do", method=RequestMethod.POST)
-    public ModelAndView loginAction(@RequestParam(value="username") String username, @RequestParam(value="password") String password,
-                                    HttpServletRequest session, HttpServletResponse resp) {
 
 
-        return view;
-    }*/
+    /*
+    * 校园寄语
+    * 单条获取显示
+    * */
+    @RequestMapping(value = "/alumni-message", method = RequestMethod.GET)
+    public String AlumniMessageDetail(@RequestParam("id") Integer id,@RequestParam("code") String code,ModelMap modelMap) {
+        AlumniMessageMapper AlumniMessageDao=ctx.getBean(AlumniMessageMapper.class);
+        modelMap.addAttribute("AlumniMessage", AlumniMessageDao.selectByPrimaryKeyCode(id,code));
+
+        return "alumni-message";
+    }
+
+    /*
+    * 校园寄语
+    * 页面列表显示
+    * */
+    @RequestMapping(value = "/alumni-messagelist", method = RequestMethod.GET)
+    public String AlumniMessageList(@RequestParam("page") Integer page,ModelMap modelMap) {
+        AlumniMessageMapper AlumniMessageDao=ctx.getBean(AlumniMessageMapper.class);
 
 
+        return "alumni-messagelist";
+    }
 
+    /*
+    * 校园公告
+    * 单条获取显示
+    * */
+    @RequestMapping(value = "/anniversary-announcement", method = RequestMethod.GET)
+    public String AnniversaryAnnouncementDetail(@RequestParam("id") Integer id,@RequestParam("code") String code,ModelMap modelMap) {
+        AnniversaryAnnouncementMapper AnniversaryAnnouncementDao=ctx.getBean(AnniversaryAnnouncementMapper.class);
+        modelMap.addAttribute("AnniversaryAnnouncement", AnniversaryAnnouncementDao.selectByPrimaryKeyCode(id,code));
+
+        return "anniversary-announcement";
+    }
+
+    /*
+    * 校园公告
+    *  页面列表显示
+    * */
+    @RequestMapping(value = "/anniversary-announcementlist", method = RequestMethod.GET)
+    public String AnniversaryAnnouncementList(@RequestParam("page") Integer page,ModelMap modelMap) {
+        AnniversaryAnnouncementMapper AnniversaryAnnouncementDao=ctx.getBean(AnniversaryAnnouncementMapper.class);
+        PageHelper.startPage(page, 10);
+        List<AnniversaryAnnouncement> AnniversaryAnnouncementList=AnniversaryAnnouncementDao.getAllAnniversaryAnnouncement();
+        modelMap.addAttribute("AnniversaryAnnouncementList", AnniversaryAnnouncementList);
+
+        PageInfo pageinfo = new PageInfo(AnniversaryAnnouncementList);
+        long count = pageinfo.getTotal();
+        modelMap.addAttribute("PageInfo", pageinfo);
+
+        return "anniversary-announcementlist";
+    }
+
+    /*
+    * 校园动态
+    * 单条获取显示
+    * */
+    @RequestMapping(value = "/anniversary-dynamic", method = RequestMethod.GET)
+    public String AnniversaryDynamicDetail(@RequestParam("id") Integer id,@RequestParam("code") String code,ModelMap modelMap) {
+        AnniversaryDynamicMapper AnniversaryDynamicDao=ctx.getBean(AnniversaryDynamicMapper.class);
+        modelMap.addAttribute("AnniversaryDynamic", AnniversaryDynamicDao.selectByPrimaryKeyCode(id,code));
+
+        return "anniversary-dynamic";
+    }
+
+    /*
+    * 校园动态
+    *  页面列表显示
+    * */
+    @RequestMapping(value = "/anniversary-dynamiclist", method = RequestMethod.GET)
+    public String AnniversaryDynamicList(@RequestParam("page") Integer page,ModelMap modelMap) {
+        AnniversaryDynamicMapper AnniversaryDynamicDao=ctx.getBean(AnniversaryDynamicMapper.class);
+
+
+        return "anniversary-dynamiclist";
+    }
+
+    /*
+    后台管理主页面
+     */
+    @RequestMapping(value = "/admin/myCMS", method = RequestMethod.GET)
+    public String article() {
+
+
+        return "admin/myCMS";
+    }
+
+    /*
+    后台登录页面
+     */
+    @RequestMapping(value = "/admin/Login", method = RequestMethod.GET)
+    public String userLogin() {
+
+
+        return "admin/Login";
+    }
+
+    /*
+    后台登录动作验证
+     */
+    @ResponseBody
+    @RequestMapping(value = "/admin/Logining", method = RequestMethod.POST)
+    public String Logining(HttpServletRequest request, HttpServletResponse response) {
+        String userName = request.getParameter("userName");
+        String passWord = request.getParameter("passWord");
+        User user = UserDao.userLogin(userName,passWord);
+
+        Gson gson = new Gson();
+        if ( user != null ) {
+            return gson.toJson(CommonResult.successReturn(null, 0, "登录成功"));
+        } else {
+            return gson.toJson(CommonResult.successReturn(null, 1, "登录失败"));
+        }
+
+
+    }
+
+
+    /*
+    * 以下是后台里面的用户管理相关
+    * */
     @ResponseBody
     @RequestMapping("/admin/usersjs")
     public List<User> getUsersjs(ModelMap modelMap) {
@@ -85,12 +221,17 @@ public class MainController {
     // post请求，处理添加用户请求，并重定向到用户管理页面
     @ResponseBody
     @RequestMapping(value = "/admin/users/addP", method = RequestMethod.POST)
-    public Map<String,String>  addUserPost(@ModelAttribute("user") User userEntity) {
+    public Map<String,String>  addUserPost(@ModelAttribute("user") User userEntity) throws UnsupportedEncodingException {
         // 注意此处，post请求传递过来的是一个UserEntity对象，里面包含了该用户的信息
         // 通过@ModelAttribute()注解可以获取传递过来的'user'，并创建这个对象
         //@ModelAttribute注解：收集post过来的数据（在此，相当于post过来了一整个userEntity，不用一个一个地取）
 
         // 数据库中添加一个用户，该步暂时不会刷新缓存
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        userEntity.setCreatTime(df.format(new Date()));
+
+        userEntity.setName(java.net.URLDecoder.decode(userEntity.getName(), "UTF-8")) ;
+        userEntity.setPassword(java.net.URLDecoder.decode(userEntity.getPassword(), "UTF-8"));
         UserDao.insert(userEntity);
 
         Map<String,String> result = new HashMap<String,String>();
@@ -134,19 +275,24 @@ public class MainController {
         // 更新用户信息
         UserDao.updateByPrimaryKeySelective(userEntity);
 
-        return "redirect:/admin/users";
+        return "admin/users";
     }
 
     // 删除用户
+    @ResponseBody
     @RequestMapping(value = "/admin/users/delete/{id}", method = RequestMethod.GET)
     public String deleteUser(@PathVariable("id") Integer userId) {
 
         // 删除id为userId的用户
-//        userRepository.delete(userId);
-        UserDao.deleteByPrimaryKey(userId);
-        // 立即刷新
-//        userRepository.flush();
-        return "redirect:/admin/users";
+        if (userId != 1) {
+            UserDao.deleteByPrimaryKey(userId);
+        }
+
+//        Map<String,boolean> result = new HashMap<String,boolean>();
+//        result.put("flag", true);
+        Gson gson = new Gson();
+        boolean flag = true;
+        return gson.toJson(flag);
     }
- /*   */
+ /**/
 }

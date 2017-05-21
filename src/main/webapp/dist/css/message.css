@@ -1,0 +1,6 @@
+.container {
+    background: url("../images/jy.png") no-repeat;
+    background-size: contain;
+    width: 1903px !important;
+    height: 2000px;
+}

@@ -5,9 +5,11 @@ public class User {
 
     private String name;
 
+    private String creatTime;
+
     private String password;
 
-    private Integer administrative;
+    private Integer administrator;
 
     public Integer getId() {
         return id;
@@ -25,6 +27,14 @@ public class User {
         this.name = name == null ? null : name.trim();
     }
 
+    public String getCreatTime() {
+        return creatTime;
+    }
+
+    public void setCreatTime(String creatTime) {
+        this.creatTime = creatTime == null ? null : creatTime.trim();
+    }
+
     public String getPassword() {
         return password;
     }
@@ -33,11 +43,11 @@ public class User {
         this.password = password == null ? null : password.trim();
     }
 
-    public Integer getAdministrative() {
-        return administrative;
+    public Integer getAdministrator() {
+        return administrator;
     }
 
-    public void setAdministrative(Integer administrative) {
-        this.administrative = administrative;
+    public void setAdministrator(Integer administrator) {
+        this.administrator = administrator;
     }
 }

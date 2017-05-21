@@ -4,35 +4,42 @@
   <resultMap id="BaseResultMap" type="com.hctek.model.User" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="creat_time" property="creatTime" jdbcType="VARCHAR" />
     <result column="password" property="password" jdbcType="VARCHAR" />
-    <result column="administrative" property="administrative" jdbcType="INTEGER" />
+    <result column="administrator" property="administrator" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, name, password, administrative
+    id, name, creat_time, password, administrator
   </sql>
   <select id="getAllUsers" parameterType="java.lang.Integer" resultMap="BaseResultMap" >
     select
     *
-    from users
+    from user
+  </select>
+  <select id="userLogin" resultMap="BaseResultMap">
+    select
+    *
+    from user
+    where name = #{0} and password = #{1}
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from users
+    from user
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from users
+    delete from user
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.hctek.model.User" >
-    insert into users (id, name, password, 
-      administrative)
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{administrative,jdbcType=INTEGER})
+    insert into user (id, name, creat_time, 
+      password, administrator)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{creatTime,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{administrator,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.hctek.model.User" >
-    insert into users
+    insert into user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
@@ -40,11 +47,14 @@
       <if test="name != null" >
         name,
       </if>
+      <if test="creatTime != null" >
+        creat_time,
+      </if>
       <if test="password != null" >
         password,
       </if>
-      <if test="administrative != null" >
-        administrative,
+      <if test="administrator != null" >
+        administrator,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -54,34 +64,41 @@
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
       </if>
+      <if test="creatTime != null" >
+        #{creatTime,jdbcType=VARCHAR},
+      </if>
       <if test="password != null" >
         #{password,jdbcType=VARCHAR},
       </if>
-      <if test="administrative != null" >
-        #{administrative,jdbcType=INTEGER},
+      <if test="administrator != null" >
+        #{administrator,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.hctek.model.User" >
-    update users
+    update user
     <set >
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
+      <if test="creatTime != null" >
+        creat_time = #{creatTime,jdbcType=VARCHAR},
+      </if>
       <if test="password != null" >
         password = #{password,jdbcType=VARCHAR},
       </if>
-      <if test="administrative != null" >
-        administrative = #{administrative,jdbcType=INTEGER},
+      <if test="administrator != null" >
+        administrator = #{administrator,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.hctek.model.User" >
-    update users
+    update user
     set name = #{name,jdbcType=VARCHAR},
+      creat_time = #{creatTime,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
-      administrative = #{administrative,jdbcType=INTEGER}
+      administrator = #{administrator,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

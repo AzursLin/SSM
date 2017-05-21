@@ -33,6 +33,17 @@
         <!--指定sql映射xml文件的路径 -->
         <property name="mapperLocations"
                   value="classpath:Mybatis-mapper/*Mapper.xml"></property>
+        <property name="plugins">
+            <array>
+                <bean class="com.github.pagehelper.PageHelper">
+                    <property name="properties">
+                        <value>
+                            dialect=mysql
+                        </value>
+                    </property>
+                </bean>
+            </array>
+        </property>
     </bean>
 
 
